@@ -1,0 +1,19 @@
+{
+	"bracketSameLine": false,
+	"bracketSpacing": true,
+	"embeddedLanguageFormatting": "auto",
+	"htmlWhitespaceSensitivity": "css",
+	"insertPragma": false,
+	"printWidth": 80,
+	"proseWrap": "preserve",
+	"quoteProps": "as-needed",
+	"requirePragma": false,
+	"semi": true,
+  "arrowParens": "always",
+	"singleQuote": false,
+	"tabWidth": 2,
+	"trailingComma": "es5",
+	"useTabs": true,
+	"parser": "typescript",
+  "organizeImportsSkipDestructiveCodeActions": true
+}
