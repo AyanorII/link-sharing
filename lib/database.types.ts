@@ -9,30 +9,82 @@ export type Json =
 export interface Database {
 	public: {
 		Tables: {
+			links: {
+				Row: {
+					created_at: string;
+					id: string;
+					platform_id: string;
+					profile_id: string;
+					url: string;
+				};
+				Insert: {
+					created_at?: string;
+					id?: string;
+					platform_id: string;
+					profile_id: string;
+					url: string;
+				};
+				Update: {
+					created_at?: string;
+					id?: string;
+					platform_id?: string;
+					profile_id?: string;
+					url?: string;
+				};
+				Relationships: [
+					{
+						foreignKeyName: "links_platform_id_fkey";
+						columns: ["platform_id"];
+						referencedRelation: "platforms";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "links_profile_id_fkey";
+						columns: ["profile_id"];
+						referencedRelation: "profiles";
+						referencedColumns: ["id"];
+					},
+				];
+			};
+			platforms: {
+				Row: {
+					created_at: string;
+					id: string;
+					name: string;
+				};
+				Insert: {
+					created_at?: string;
+					id?: string;
+					name: string;
+				};
+				Update: {
+					created_at?: string;
+					id?: string;
+					name?: string;
+				};
+				Relationships: [];
+			};
 			profiles: {
 				Row: {
-					avatar_url: string | null;
-					email: string | null;
+					avatar: string | null;
+					email: string;
 					first_name: string | null;
 					id: string;
 					last_name: string | null;
-					updated_at: string | null;
 				};
 				Insert: {
-					avatar_url?: string | null;
-					email?: string | null;
+					avatar?: string | null;
+					email: string;
 					first_name?: string | null;
 					id: string;
 					last_name?: string | null;
-					updated_at?: string | null;
 				};
 				Update: {
-					avatar_url?: string | null;
-					email?: string | null;
+					avatar?: string | null;
+					email?: string;
 					first_name?: string | null;
 					id?: string;
 					last_name?: string | null;
-					updated_at?: string | null;
 				};
 				Relationships: [
 					{
