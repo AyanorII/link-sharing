@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
+import { twMerge } from "tailwind-merge";
+
 import "./globals.css";
 
 const instrumentSans = Instrument_Sans({ subsets: ["latin"] });
@@ -16,7 +21,21 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body className={instrumentSans.className}>{children}</body>
+			<body className={twMerge([instrumentSans.className, "bg-[#fafafa]"])}>
+				{children}
+				<ToastContainer
+					position="bottom-right"
+					autoClose={2500}
+					hideProgressBar={false}
+					newestOnTop={false}
+					closeOnClick
+					rtl={false}
+					pauseOnFocusLoss
+					draggable
+					pauseOnHover={false}
+					theme="colored"
+				/>
+			</body>
 		</html>
 	);
 }
