@@ -42,7 +42,7 @@ const TabsTrigger = React.forwardRef<
 			)}
 			{...props}
 		>
-			{icon && React.cloneElement(icon, { className: "w-4 h-4" })}
+			{icon}
 			{children}
 		</TabsPrimitive.Trigger>
 	);
