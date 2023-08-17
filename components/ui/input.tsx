@@ -3,6 +3,8 @@ import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
+import { Label } from "./label";
+
 export interface InputProps
 	extends React.InputHTMLAttributes<HTMLInputElement> {
 	icon?: string;
@@ -15,14 +17,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 	({ className, type, icon, error, errorMessage, label, ...props }, ref) => {
 		return (
 			<div>
-				{label && (
-					<label
-						htmlFor={props.id}
-						className="mb-1 block text-sm text-gray-600"
-					>
-						{label}
-					</label>
-				)}
+				{label && <Label htmlFor={props.id}>{label}</Label>}
 				<div className="relative flex w-full bg-background">
 					{icon && (
 						<Image
