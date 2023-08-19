@@ -37,7 +37,8 @@ SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 const SelectContent = React.forwardRef<
 	React.ElementRef<typeof SelectPrimitive.Content>,
 	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ className, children, position = "popper", ...props }) => (
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+>(({ className, children, position = "popper", ...props }, _) => (
 	<SelectPrimitive.Portal>
 		<SelectPrimitive.Content
 			// Reference: https://github.com/radix-ui/primitives/issues/1658#issuecomment-1664079551
