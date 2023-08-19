@@ -1,2 +1,1 @@
-export * from "./create-link.schema";
-export * from "./update-link.schema";
+export * from "./upsert-link.schema";
