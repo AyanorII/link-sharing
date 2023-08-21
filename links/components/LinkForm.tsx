@@ -3,6 +3,7 @@
 import { useCallback, useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
+import TabHeader from "@/components/TabHeader";
 import {
 	Button,
 	Card,
@@ -18,7 +19,6 @@ import { User } from "@supabase/supabase-js";
 import { useLinkForm } from "../hooks/useLinkForm";
 import { upsertLinkSchema } from "../schemas";
 import { Link, UpsertLink } from "../types";
-import { LinkFormHeader } from "./LinkFormHeader";
 import { LinkItem } from "./LinkItem";
 import { NoLinks } from "./NoLinks";
 
@@ -73,8 +73,19 @@ export const LinkForm = ({ user, platforms, links }: Props) => {
 			<Form {...methods}>
 				{/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
 				<form onSubmit={handleSubmit}>
-					<CardHeader className="md:p-10">
-						<LinkFormHeader onClick={appendItemCard} />
+					<CardHeader className="gap-10 md:p-10">
+						<TabHeader
+							title="Customize your links"
+							description="Add/edit/remove links below and then share all your profiles with the world!"
+						/>
+						<Button
+							type="button"
+							variant="outline"
+							className="w-full"
+							onClick={appendItemCard}
+						>
+							+ Add new link
+						</Button>
 					</CardHeader>
 					<CardContent className="flex flex-col gap-6 md:p-10 md:pt-0">
 						{fields.map((field, index) => (
