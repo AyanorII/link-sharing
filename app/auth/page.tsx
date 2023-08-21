@@ -1,12 +1,13 @@
-import { cookies } from "next/headers";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
 import { AuthForm } from "@/auth/components/AuthForm/AuthForm";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+
+import { getSupabaseServerClient } from "@/lib/supabase/utils";
 
 const AuthPage = async () => {
-	const supabase = createServerComponentClient({ cookies });
+	const supabase = getSupabaseServerClient("component");
+
 	const {
 		data: { session },
 	} = await supabase.auth.getSession();
