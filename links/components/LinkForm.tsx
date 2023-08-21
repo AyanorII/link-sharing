@@ -3,15 +3,9 @@
 import { useCallback, useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
-import TabHeader from "@/components/TabHeader";
-import {
-	Button,
-	Card,
-	CardContent,
-	CardFooter,
-	CardHeader,
-} from "@/components/ui";
-import { Form } from "@/components/ui/form";
+import { TabCard } from "@/components/DashboardTabCard";
+import { TabHeader } from "@/components/TabHeader";
+import { Button, Form } from "@/components/ui";
 import { Platform } from "@/platforms/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "@supabase/supabase-js";
@@ -69,11 +63,11 @@ export const LinkForm = ({ user, platforms, links }: Props) => {
 	const handleSubmit = useCallback(saveLinks, [links, dirtyFields, saveLinks]);
 
 	return (
-		<Card className="grow">
+		<TabCard>
 			<Form {...methods}>
 				{/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
 				<form onSubmit={handleSubmit}>
-					<CardHeader className="gap-10 md:p-10">
+					<TabCard.Header>
 						<TabHeader
 							title="Customize your links"
 							description="Add/edit/remove links below and then share all your profiles with the world!"
@@ -86,8 +80,8 @@ export const LinkForm = ({ user, platforms, links }: Props) => {
 						>
 							+ Add new link
 						</Button>
-					</CardHeader>
-					<CardContent className="flex flex-col gap-6 md:p-10 md:pt-0">
+					</TabCard.Header>
+					<TabCard.Content>
 						{fields.map((field, index) => (
 							<LinkItem
 								key={field.fieldId}
@@ -98,8 +92,8 @@ export const LinkForm = ({ user, platforms, links }: Props) => {
 							/>
 						))}
 						{fields.length === 0 && <NoLinks />}
-					</CardContent>
-					<CardFooter className="border-t pt-6 md:p-10 lg:py-4">
+					</TabCard.Content>
+					<TabCard.Footer>
 						<Button
 							type="submit"
 							className="w-full lg:ml-auto lg:w-auto"
@@ -107,10 +101,10 @@ export const LinkForm = ({ user, platforms, links }: Props) => {
 						>
 							Save
 						</Button>
-					</CardFooter>
+					</TabCard.Footer>
 					{/* <DevTool control={control} /> */}
 				</form>
 			</Form>
-		</Card>
+		</TabCard>
 	);
 };
