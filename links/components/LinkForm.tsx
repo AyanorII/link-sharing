@@ -95,10 +95,10 @@ export const LinkForm = ({ user, platforms, links }: Props) => {
 							))}
 							{fields.length === 0 && <NoLinks />}
 						</CardContent>
-						<CardFooter className="border-t pt-6 md:p-10">
+						<CardFooter className="border-t pt-6 md:p-10 lg:py-4">
 							<Button
 								type="submit"
-								className="w-full"
+								className="w-full lg:ml-auto lg:w-auto"
 								disabled={fields.length === 0 || isSubmitting}
 							>
 								Save
