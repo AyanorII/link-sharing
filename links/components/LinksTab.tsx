@@ -13,14 +13,6 @@ export const LinksTab = async () => {
 		getLinks(),
 	]);
 
-	const linksWithPlatforms =
-		links?.map((link) => ({
-			...link,
-			platform:
-				platforms?.find((platform) => platform.id === link.platform_id) ||
-				link.platform,
-		})) || [];
-
 	const {
 		data: { user },
 	} = await supabase.auth.getUser();
@@ -30,10 +22,6 @@ export const LinksTab = async () => {
 	}
 
 	return (
-		<LinkForm
-			user={user}
-			platforms={platforms || []}
-			links={linksWithPlatforms || []}
-		/>
+		<LinkForm user={user} platforms={platforms || []} links={links || []} />
 	);
 };
