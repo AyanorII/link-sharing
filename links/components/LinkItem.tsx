@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useFormContext } from "react-hook-form";
 import { LiaGripLinesSolid } from "react-icons/lia";
 
@@ -25,6 +24,8 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Platform } from "@/platforms/types";
+
+import { PlatformIcon } from "@/platforms/constants";
 
 type Props = {
 	index: number;
@@ -75,15 +76,7 @@ export const LinkItem = ({ index, platforms, onRemove }: Props) => {
 										<SelectGroup>
 											{platforms.map(({ name, id }) => (
 												<SelectItem key={id} value={id}>
-													<Image
-														src={`/images/icon-${name
-															.replaceAll(/\s/g, "-")
-															.replaceAll(/[^\w-]/g, "")
-															.toLowerCase()}.svg`}
-														alt={name}
-														width={24}
-														height={24}
-													/>
+													{PlatformIcon[name as keyof typeof PlatformIcon]}
 													{name}
 												</SelectItem>
 											))}
@@ -102,7 +95,11 @@ export const LinkItem = ({ index, platforms, onRemove }: Props) => {
 						<FormItem>
 							<FormLabel>Link</FormLabel>
 							<FormControl>
-								<Input {...field} placeholder="e.g. https://www.github.com/" />
+								<Input
+									{...field}
+									placeholder="e.g. https://www.github.com/"
+									icon="/images/icon-link.svg"
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
