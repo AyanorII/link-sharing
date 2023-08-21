@@ -1,20 +1,25 @@
-import { cookies } from "next/headers";
+import { getPlatforms } from "@/platforms/actions";
 
-import { Database } from "@/lib/database.types";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { getSupabaseServerClient } from "@/lib/supabase/utils";
 
+import { getLinks } from "../actions";
 import { LinkForm } from "./LinkForm";
 
 export const LinksTab = async () => {
-	const supabase = createServerComponentClient<Database>({ cookies });
-
-	const getPlatforms = supabase.from("platforms").select("*");
-	const getLinks = supabase.from("links").select("*");
+	const supabase = getSupabaseServerClient("component");
 
 	const [{ data: platforms }, { data: links }] = await Promise.all([
-		getPlatforms,
-		getLinks,
+		getPlatforms(),
+		getLinks(),
 	]);
+
+	const linksWithPlatforms =
+		links?.map((link) => ({
+			...link,
+			platform:
+				platforms?.find((platform) => platform.id === link.platform_id) ||
+				link.platform,
+		})) || [];
 
 	const {
 		data: { user },
@@ -25,6 +30,10 @@ export const LinksTab = async () => {
 	}
 
 	return (
-		<LinkForm user={user} platforms={platforms || []} links={links || []} />
+		<LinkForm
+			user={user}
+			platforms={platforms || []}
+			links={linksWithPlatforms || []}
+		/>
 	);
 };

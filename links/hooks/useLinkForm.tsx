@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Database } from "@/lib/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
+import { deleteLink, saveLink } from "../actions";
 import { getNewAndDuplicateLinks } from "../helpers";
 import { showDuplicateLinkErrors } from "../helpers/showDuplicateLinkErrors";
 import { InsertLink, UpsertLink } from "../types";
@@ -41,12 +42,7 @@ export const useLinkForm = (
 		}
 
 		try {
-			const { error } = await supabase
-				.from("links")
-				.upsert(newLinks as InsertLink[], {
-					onConflict: "id",
-				})
-				.select();
+			const { error } = await saveLink(newLinks as InsertLink[]);
 
 			if (error) return toast.error(error.message);
 
@@ -62,13 +58,9 @@ export const useLinkForm = (
 			const isLinkPersisted = Boolean(id);
 
 			if (isLinkPersisted) {
-				const { error } = await supabase
-					.from("links")
-					.delete()
-					.eq("id", id)
-					.select("*");
-
+				const { error } = await deleteLink(id!);
 				if (error) return toast.error(error.message);
+
 				toast.success("Link removed.");
 			}
 
