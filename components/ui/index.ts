@@ -4,5 +4,6 @@ export * from "./container";
 export * from "./form";
 export * from "./input";
 export * from "./label";
+export * from "./navbar";
 export * from "./select";
 export * from "./tabs";
