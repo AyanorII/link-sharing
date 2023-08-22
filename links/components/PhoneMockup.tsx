@@ -81,22 +81,22 @@ export const PhoneMockup = () => {
 				stroke="#737373"
 				d="M12 55.5C12 30.923 31.923 11 56.5 11h24C86.851 11 92 16.149 92 22.5c0 8.008 6.492 14.5 14.5 14.5h95c8.008 0 14.5-6.492 14.5-14.5 0-6.351 5.149-11.5 11.5-11.5h24c24.577 0 44.5 19.923 44.5 44.5v521c0 24.577-19.923 44.5-44.5 44.5h-195C31.923 621 12 601.077 12 576.5v-521Z"
 			/>
-			<foreignObject x="0" y="65" width="308" height="300">
-				<div className="flex flex-col items-center">
-					<Avatar avatar={avatar} alt={fullName} />
-					<FullName firstName={first_name} lastName={last_name} />
-					<Email email={email} />
-				</div>
-			</foreignObject>
-			<foreignObject x="35" y="278" width="237" height="500">
-				<div className="flex flex-col gap-4">
-					{linkList.map((link, index) =>
-						link ? (
-							<ProfileLink key={link.fieldId} link={link} />
-						) : (
-							<LinkSkeleton key={index} />
-						)
-					)}
+			<foreignObject x="0" y="0" width="308" height="900">
+				<div className="px-8 pt-14">
+					<div className="flex flex-col items-center">
+						<Avatar avatar={avatar} alt={fullName} />
+						<FullName firstName={first_name} lastName={last_name} />
+						<Email email={email} />
+					</div>
+					<div className="mt-9 flex flex-col gap-4">
+						{linkList.map((link, index) =>
+							link ? (
+								<ProfileLink key={link.fieldId} link={link} />
+							) : (
+								<LinkSkeleton key={index} />
+							)
+						)}
+					</div>
 				</div>
 			</foreignObject>
 		</svg>

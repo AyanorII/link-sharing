@@ -21,7 +21,7 @@ export default async function DashboardPage() {
 	return (
 		<PreviewProvider profile={profile!}>
 			<Container className="mt-4 md:mt-10">
-				<div className="my-4 mb-10 flex gap-4 md:my-10">
+				<div className="my-4 mb-10 flex items-start gap-4 md:my-10">
 					<Card className="sticky top-16 hidden max-w-[358px] grow justify-center p-6  lg:flex">
 						<CardContent className="p-0">
 							<PhoneMockup />
