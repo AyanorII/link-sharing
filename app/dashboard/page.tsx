@@ -1,6 +1,7 @@
 import { Card, CardContent, Container, TabsContent } from "@/components/ui";
 import { PhoneMockup } from "@/links/components/PhoneMockup";
 import { PreviewProvider } from "@/preview/providers";
+import { getProfile } from "@/profiles/actions";
 
 import { getSupabaseServerClient } from "@/lib/supabase/utils";
 
@@ -12,14 +13,10 @@ export default async function DashboardPage() {
 		data: { user },
 	} = await supabase.auth.getUser();
 
-	const { data: profile } = await supabase
-		.from("profiles")
-		.select("*")
-		.eq("id", user!.id)
-		.single();
+	const profile = await getProfile(user!.id);
 
 	return (
-		<PreviewProvider profile={profile!}>
+		<PreviewProvider profile={profile}>
 			<Container className="mt-4 md:mt-10">
 				<div className="my-4 mb-10 flex items-start gap-4 md:my-10">
 					<Card className="sticky top-16 hidden max-w-[358px] grow justify-center p-6  lg:flex">

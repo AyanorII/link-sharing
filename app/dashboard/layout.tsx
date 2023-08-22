@@ -1,17 +1,25 @@
 import Image from "next/image";
+import Link from "next/link";
 import { BsEye } from "react-icons/bs";
 
-import { Button, Tabs, TabsList, TabsTrigger } from "@/components/ui";
+import { Tabs, TabsList, TabsTrigger, buttonVariants } from "@/components/ui";
 import { Navbar } from "@/components/ui/navbar";
 import { DashboardTab } from "@/lib/dashboard/types";
 
+import { getSupabaseServerClient } from "@/lib/supabase/utils";
+
 import { DASHBOARD_TABS } from "@/lib/dashboard/constants";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
+	const supabase = getSupabaseServerClient("component");
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+
 	return (
 		<Tabs defaultValue={DashboardTab.Links}>
 			<Navbar>
@@ -38,10 +46,13 @@ export default function DashboardLayout({
 						</TabsTrigger>
 					))}
 				</TabsList>
-				<Button variant="outline">
+				<Link
+					href={`/preview/${user!.id}`}
+					className={buttonVariants({ variant: "outline" })}
+				>
 					<BsEye className="md:hidden" size={20} />
 					<span className="hidden md:block">Preview</span>
-				</Button>
+				</Link>
 			</Navbar>
 			{children}
 		</Tabs>
