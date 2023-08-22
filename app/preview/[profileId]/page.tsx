@@ -1,3 +1,4 @@
+import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -11,6 +12,16 @@ import { getSupabaseServerClient } from "@/lib/supabase/utils";
 type Params = {
 	params: {
 		profileId: string;
+	};
+};
+
+export const generateMetadata = async ({
+	params: { profileId },
+}: Params): Promise<Metadata> => {
+	const profile = await getProfile(profileId);
+
+	return {
+		title: `${profile?.first_name} ${profile?.last_name} | Link Sharing`,
 	};
 };
 
