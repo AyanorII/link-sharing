@@ -9,3 +9,10 @@ export type UpsertLink = InsertLink | UpdateLink;
 export interface LinkWithPlatform extends Link {
 	platform: Platform;
 }
+export type UpsertLinkWithPlatform = UpsertLink & {
+	platform: Platform;
+};
+
+export type ArrayField<T> = T & {
+	fieldId: string;
+};
