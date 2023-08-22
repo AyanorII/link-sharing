@@ -1,6 +1,7 @@
-import Image from "next/image";
+import NextImage from "next/image";
 import { ChangeEvent, useState } from "react";
 import { BsImage } from "react-icons/bs";
+import { toast } from "react-toastify";
 
 import { twMerge } from "tailwind-merge";
 
@@ -16,17 +17,26 @@ export const UploadImage = ({ value, ...props }: Props) => {
 
 		if (files?.[0]) {
 			const file = files[0];
+			if (!file) return;
+
+			if (!["image/png", "image/jpg"].includes(file.type)) {
+				return toast.error("Image must be a PNG or JPG file.");
+			}
+
+			if (file.size > 1024 * 1024 * 4) {
+				return toast.error("Image must be less than 4MB.");
+			}
+
 			const blob = new Blob([file]);
 			setBlob(URL.createObjectURL(blob));
 		}
-
 		props.onChange?.(e);
 	};
 
 	const baseClassName =
 		"flex flex-col justify-center w-full gap-4 font-semibold cursor-pointer transition-all items-center gap-4 bg-primary-foreground text-primary";
 	const withBlobClassName =
-		"absolute inset-0 z-10 bg-dark opacity-0 group-hover:opacity-75 text-white";
+		"absolute inset-0 z-10 bg-black opacity-0 group-hover:opacity-75 text-white";
 	const withoutBlobClassName = "h-full bg-primary-foreground text-primary";
 
 	return (
@@ -47,7 +57,12 @@ export const UploadImage = ({ value, ...props }: Props) => {
 				<span>{blob ? "Change image" : "+ Upload Image"}</span>
 			</label>
 			{blob && (
-				<Image src={blob} alt="i" fill className="object-cover object-center" />
+				<NextImage
+					src={blob}
+					alt="i"
+					fill
+					className="object-cover object-center"
+				/>
 			)}
 			<Input
 				type="file"
@@ -55,6 +70,7 @@ export const UploadImage = ({ value, ...props }: Props) => {
 				onChange={handleChange}
 				id="upload"
 				className="hidden"
+				accept="image/png, image/jpg"
 			/>
 		</div>
 	);
