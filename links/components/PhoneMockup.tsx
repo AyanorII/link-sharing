@@ -1,18 +1,21 @@
-import { LinkWithPlatform } from "../types";
+"use client";
+
+import { usePreviewContext } from "../../preview/providers";
+import { ArrayField } from "../types";
 import { ProfileLink } from "./ProfileLink";
 
 const LinkSkeleton = () => {
 	return <div className="h-[54px] w-full rounded bg-[#EEE]" />;
 };
 
-type Props = {
-	links: LinkWithPlatform[];
-};
-
-export const PhoneMockup = ({ links }: Props) => {
+export const PhoneMockup = () => {
 	const MAX_LINKS_ON_SCREEN = 5;
 
-	const linkList = new Array(MAX_LINKS_ON_SCREEN)
+	const { links } = usePreviewContext();
+
+	const linkList: ArrayField<(typeof links)[number]>[] = new Array(
+		MAX_LINKS_ON_SCREEN
+	)
 		.fill(null)
 		.map((_, i) => links[i]);
 
@@ -40,7 +43,7 @@ export const PhoneMockup = ({ links }: Props) => {
 				<div className="flex flex-col gap-4">
 					{linkList.map((link, index) =>
 						link ? (
-							<ProfileLink key={link.id} link={link} />
+							<ProfileLink key={link.fieldId} link={link} />
 						) : (
 							<LinkSkeleton key={index} />
 						)

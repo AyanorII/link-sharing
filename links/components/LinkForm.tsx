@@ -7,24 +7,25 @@ import { TabCard } from "@/components/DashboardTabCard";
 import { TabHeader } from "@/components/TabHeader";
 import { Button, Form } from "@/components/ui";
 import { Platform } from "@/platforms/types";
+import { usePreviewContext } from "@/preview/providers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "@supabase/supabase-js";
 
 import { useLinkForm } from "../hooks/useLinkForm";
 import { upsertLinkSchema } from "../schemas";
-import { Link, UpsertLink } from "../types";
+import { LinkWithPlatform, UpsertLink } from "../types";
 import { LinkItem } from "./LinkItem";
 import { NoLinks } from "./NoLinks";
 
 type Props = {
 	user: User;
 	platforms: Platform[];
-	links: Link[];
+	links: LinkWithPlatform[];
 };
 
 export const LinkForm = ({ user, platforms, links }: Props) => {
 	const methods = useForm<{
-		links: UpsertLink[];
+		links: (UpsertLink & { platform: Platform })[];
 	}>({
 		defaultValues: {
 			links: links || [],
@@ -38,29 +39,62 @@ export const LinkForm = ({ user, platforms, links }: Props) => {
 		reset,
 	} = methods;
 
-	useEffect(() => {
-		reset({ links });
-	}, [links]);
-
 	const fieldArrayMethods = useFieldArray({
 		control,
 		name: "links",
 		keyName: "fieldId",
 	});
 
-	const { fields, append } = fieldArrayMethods;
+	const { fields, append, update } = fieldArrayMethods;
 
-	const appendItemCard = () => {
-		append({
-			profile_id: user.id,
-			platform_id: platforms.at(0)?.id || "",
-			url: "",
-		});
-	};
+	const { setLinks } = usePreviewContext();
+
+	useEffect(() => {
+		reset({ links });
+	}, [links]);
+
+	useEffect(() => {
+		setLinks(
+			fields.map((field) => {
+				const platform = platforms.find(
+					(platform) => platform.id === field.platform_id
+				);
+
+				return { ...field, platform: platform! };
+			})
+		);
+	}, [fields]);
 
 	const { saveLinks, removeLink } = useLinkForm(methods, fieldArrayMethods);
 
 	const handleSubmit = useCallback(saveLinks, [links, dirtyFields, saveLinks]);
+
+	const appendItemCard = () => {
+		const platform = platforms.at(0);
+		const link = {
+			profile_id: user.id,
+			platform_id: platform!.id || "",
+			platform: platform!,
+			url: "",
+		};
+		append(link);
+		setLinks((links) => [...links, fields.at(-1)!]);
+	};
+
+	const handlePlatformChange = ({
+		platformId,
+		index,
+	}: {
+		platformId: string;
+		index: number;
+	}) => {
+		const platform = platforms.find((platform) => platform.id === platformId);
+		update(index, {
+			...fields[index],
+			platform_id: platformId,
+			platform: platform!,
+		});
+	};
 
 	return (
 		<TabCard>
@@ -87,6 +121,9 @@ export const LinkForm = ({ user, platforms, links }: Props) => {
 								key={field.fieldId}
 								index={index}
 								platforms={platforms}
+								onPlatformChange={(platformId) =>
+									handlePlatformChange({ platformId, index })
+								}
 								// eslint-disable-next-line @typescript-eslint/no-misused-promises
 								onRemove={async () => await removeLink(index)}
 							/>

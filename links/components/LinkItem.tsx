@@ -31,9 +31,15 @@ type Props = {
 	index: number;
 	platforms: Platform[];
 	onRemove: () => void;
+	onPlatformChange: (platformId: string) => void;
 };
 
-export const LinkItem = ({ index, platforms, onRemove }: Props) => {
+export const LinkItem = ({
+	index,
+	platforms,
+	onRemove,
+	onPlatformChange,
+}: Props) => {
 	const { control } = useFormContext();
 
 	return (
@@ -63,7 +69,10 @@ export const LinkItem = ({ index, platforms, onRemove }: Props) => {
 							<FormLabel>Platform</FormLabel>
 							<FormControl>
 								<Select
-									onValueChange={field.onChange}
+									onValueChange={(e) => {
+										field.onChange(e);
+										onPlatformChange(e);
+									}}
 									defaultValue={field.value as string}
 								>
 									<SelectTrigger className="w-full">

@@ -7,12 +7,12 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { deleteLink, saveLink } from "../actions";
 import { getNewAndDuplicateLinks } from "../helpers";
 import { showDuplicateLinkErrors } from "../helpers/showDuplicateLinkErrors";
-import { InsertLink, UpsertLink } from "../types";
+import { InsertLink, UpsertLink, UpsertLinkWithPlatform } from "../types";
 
 export const useLinkForm = (
-	methods: UseFormReturn<{ links: UpsertLink[] }>,
+	methods: UseFormReturn<{ links: UpsertLinkWithPlatform[] }>,
 	fieldArrayMethods: UseFieldArrayReturn<
-		{ links: UpsertLink[] },
+		{ links: UpsertLinkWithPlatform[] },
 		"links",
 		"fieldId"
 	>

@@ -18,6 +18,7 @@ export const getLinks = async () => {
 	const links = await supabase
 		.from("links")
 		.select("*, platform:platform_id(*)")
+		.order("created_at", { ascending: false })
 		.returns<LinkWithPlatform[]>();
 
 	return links;
