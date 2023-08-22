@@ -1,4 +1,8 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import { AiOutlineArrowDown } from "react-icons/ai";
 
 import { ProfileLink } from "@/links/components/ProfileLink";
 import {
@@ -6,6 +10,7 @@ import {
 	LinkWithPlatform,
 	UpsertLinkWithPlatform,
 } from "@/links/types";
+import { twMerge } from "tailwind-merge";
 
 import { Profile } from "../types";
 
@@ -63,14 +68,43 @@ export const ProfilePreview = ({ links, profile }: Props) => {
 
 	const fullName = `${first_name} ${last_name}`;
 
+	const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+
+	const [showIcon, setShowIcon] = useState(false);
+
+	const checkScroll = () => {
+		if (!scrollContainerRef.current) return;
+
+		const container = scrollContainerRef.current;
+		// Check if user has reached the bottom
+		const isBottom =
+			container.scrollHeight - container.scrollTop === container.clientHeight;
+		setShowIcon(!isBottom);
+	};
+
+	useEffect(() => {
+		// Initial check for the icon visibility
+		checkScroll();
+		// Add event listener
+		scrollContainerRef.current?.addEventListener("scroll", checkScroll);
+
+		// Cleanup the event listener on component unmount
+		return () => {
+			scrollContainerRef.current?.removeEventListener("scroll", checkScroll);
+		};
+	}, []);
+
 	return (
-		<div className="p-8">
+		<div className="relative p-8">
 			<div className="flex flex-col items-center">
 				<Avatar avatar={avatar} alt={fullName} />
 				<FullName firstName={first_name} lastName={last_name} />
 				<Email email={email} />
 			</div>
-			<div className="no-scrollbar mt-9 flex max-h-[350px] flex-col gap-4 overflow-auto">
+			<div
+				className="no-scrollbar mt-6 flex max-h-[350px] flex-col gap-4 overflow-auto py-6"
+				ref={scrollContainerRef}
+			>
 				{links.map((link, index) =>
 					link ? (
 						<ProfileLink
@@ -84,6 +118,16 @@ export const ProfilePreview = ({ links, profile }: Props) => {
 					)
 				)}
 			</div>
+			{
+				<div
+					className={twMerge([
+						"absolute bottom-1 left-[47%] animate-bounce text-gray-500 transition-all",
+						showIcon ? "opacity-100" : "opacity-0",
+					])}
+				>
+					<AiOutlineArrowDown />
+				</div>
+			}
 		</div>
 	);
 };
