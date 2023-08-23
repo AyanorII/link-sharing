@@ -65,6 +65,18 @@ export const ProfileForm = () => {
 		});
 	}, [profile]);
 
+	const logout = async () => {
+		const supabase = createClientComponentClient<Database>();
+
+		try {
+			const { error } = await supabase.auth.signOut();
+
+			if (error) toast.error(error.message);
+		} catch (e) {
+			toast.error("Something went wrong. Please try again.");
+		}
+	};
+
 	const uploadAvatar = async (id: string) => {
 		const supabase = createClientComponentClient<Database>();
 		const key = `${id}/${file!.name}`;
@@ -235,13 +247,19 @@ export const ProfileForm = () => {
 						</Card>
 					</TabCard.Content>
 					<TabCard.Footer>
-						<Button
-							type="submit"
-							className="w-full lg:ml-auto lg:w-auto"
-							disabled={isSubmitting}
-						>
-							Save
-						</Button>
+						<div className="flex w-full justify-between gap-5">
+							{/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+							<Button variant="destructive" type="button" onClick={logout}>
+								Logout
+							</Button>
+							<Button
+								type="submit"
+								className="w-full lg:ml-auto lg:w-auto"
+								disabled={isSubmitting}
+							>
+								Save
+							</Button>
+						</div>
 					</TabCard.Footer>
 				</TabCard>
 			</form>
