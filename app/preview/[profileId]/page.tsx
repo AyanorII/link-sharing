@@ -20,8 +20,10 @@ export const generateMetadata = async ({
 }: Params): Promise<Metadata> => {
 	const profile = await getProfile(profileId);
 
+	const fullName = `${profile?.first_name ?? ""} ${profile?.last_name ?? ""}`;
+
 	return {
-		title: `${profile?.first_name} ${profile?.last_name} | Link Sharing`,
+		title: `${fullName.trim().length > 0 ? `${fullName} | ` : ""}Link Sharing`,
 	};
 };
 
