@@ -29,7 +29,7 @@ export default async function RootLayout({
 	} = await supabase.auth.getUser();
 
 	const headersList = headers();
-	const pathname = headersList.get("x-invoke-path") || "";
+	const pathname = headersList.get("x-pathname") || "";
 
 	const publicRoutes = ["/auth", "/preview"];
 	const isFromPublicRoute = publicRoutes.some((route) =>
